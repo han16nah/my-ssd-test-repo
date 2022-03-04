@@ -36,15 +36,15 @@ def main(argv):
 
 
 class in_out:
-    def __init__(self, df_name: str):
-        self.df_name = df_name
+    def __init__(self, df: str):
+        self.df = df
 
     """
     :param str : df_name : name of df
     """
     # import data into df
-    def read_csv(self, file_in: str):
-        return self.df_name
+    def read_csv(self, file_in: str) -> pd.DataFrame:
+        return self.df
 
     def write_to_csv(self, file_out: str):
         pass
@@ -55,7 +55,7 @@ class analysis:
         self.df = df
         self.df_filtered = None
 
-    def filter_columns_by_variance(self, treshold):
+    def filter_columns_by_variance(self, treshold: float):
         return self.df_filtered
 
     def create_corr_matrix(self, rm_col: str = None):
