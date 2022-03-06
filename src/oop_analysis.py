@@ -65,12 +65,15 @@ class analysis:
         The output contains no redundant correlation values
         and is sorted ascending.
 
-        :param rm_col: Name of a column in the data frame to remove,
-            defaults to None
-        :type rm_col: str, optional
-        :return: Sorted Series of Pearson's Correlation Coefficient
-        :rtype: pd.Series
+        Args:
+            rm_col (str, optional): Name of column in the data frame to remove.
+                Defaults to None.
+
+        Returns:
+            pd.Series: Sorted Series of Pearson's Correlation Coefficient
+
         """
+
         # correlation matrix
         r = self.df_filtered.corr()
 
