@@ -58,8 +58,19 @@ class analysis:
     def filter_columns_by_variance(self, treshold: float):
         return self.df_filtered
 
-    def create_corr_matrix(self, rm_col: str = None):
+    def create_corr_matrix(self, rm_col: str = None) -> pd.Series:
+        """Function to compute the correlation coefficients (Pearson'r R)
+        between values in a data frame.
+        Optionally, a single column can be removed.
+        The output contains no redundant correlation values
+        and is sorted ascending.
 
+        :param rm_col: Name of a column in the data frame to remove,
+            defaults to None
+        :type rm_col: str, optional
+        :return: Sorted Series of Pearson's Correlation Coefficient
+        :rtype: pd.Series
+        """
         # correlation matrix
         r = self.df_filtered.corr()
 
@@ -68,7 +79,7 @@ class analysis:
         if rm_col is not None:
             r_ut.pop(rm_col)
 
-        # sort
+        # sort ascending
         sorted_r = r_ut.unstack().dropna().sort_values()
 
         return sorted_r
