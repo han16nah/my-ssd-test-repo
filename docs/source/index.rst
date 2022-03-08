@@ -13,6 +13,7 @@ Welcome to My Awesome Project's documentation!
    readme
    modules
    license
+   requirements_link
    
 
 Indices and tables
