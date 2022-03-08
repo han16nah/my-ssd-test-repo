@@ -22,8 +22,9 @@ import sys
 ##############################################################
 def main(argv):
     """
+    Args:
 
-    :param argv: user input
+        argv (list, required): user input
     """
 
     """
@@ -70,70 +71,93 @@ def main(argv):
 
 
 class in_out:
-    def __init__(self, df_name: str):
-        self.df_name = df_name
-        self.np_array_name = ""
-        self.file_out = ""
-        self.table_name = None
+    def __init__(
+        self,
+        df: str = None,
+        np_array: str = None,
+        file_out: str = None,
+        table: str = None,
+    ):
+        self.df = df
+        self.np_array = np_array
+        self.file_out = file_out
+        self.table = table
 
         """
-        :param str df_name : name of df
-        :param str file_out : path to output file
-        :param str np_array_name : name of np array
+        Args:
+            df (str, optional): Dataframe.
+                Defauts to None.
+            np_array (str, optional): name of np array.
+                Defaults to None.
+            file_out (str, optional): path to output file.
+                Defaults to None.
+            table (str, optional): path to table file.
+                Defaults to None.
         """
 
     # read csv file into dataframe
-    def read_csv_as_df(self, file_in, col_separator, skip_initial_space):
+    def read_csv_as_df(
+        self,
+        file_in: str = None,
+        col_separator: str = ",",
+        skip_initial_space: bool = True,
+    ):
+        """Method to read csv file into dataframe
+
+        Args:
+            file_in (str, optional): Path to input file.
+                Defaults to None.
+            col_separator (str, optional): Column separator of input file.
+                Defaults to ",".
+            skip_initial_space (bool, optional): Indicator if initial space
+            should be skipped.
+                Defaults to True.
+
+        Returns:
+            self.df: Generated dataframe
+
         """
 
-        Method to read csv file into dataframe
-
-        :param str file_in : path to input file
-        :param str col_separator : column separator
-        :param bool skip_initial_space : indicator if initial space should be
-        skipped
-
-        :return self.df_name : name of generated dataframe
-        """
-
-        self.df_name = pd.read_csv(
+        self.df = pd.read_csv(
             file_in, sep=col_separator, skipinitialspace=skip_initial_space
         )
 
     # read csv file as numpy array
-    def read_csv_as_np_array(self, file_in, skip_rows):
+    def read_csv_as_np_array(self, file_in: str = None):
+        """Method to read csv file into numpy array
+
+        Args:
+            file_in (str, optional): input file
+                Defaults to None.
+
+        Returns:
+            self.table: Generated numpy array
+
         """
-        Method to read csv file into numpy array
 
-        :param skip_rows:
-        :param str file_in: input file
-
-        :return self.table_name : name of generated numpy array
-
-        """
-
-        self.table_name = np.loadtxt(file_in, skiprows=skip_rows)
+        self.table = np.loadtxt(file_in, skiprows=True)
 
     # write dataframe to csv file
-    def write_df_to_csv(self, df, file_out, header):
-        """
-        Method to write dataframe into csv file
+    def write_df_to_csv(self, file_out: str = None, header: bool = True):
+        """Method to write dataframe into csv file
+        Args:
 
-        :param df: dataframe to be written to csv
-        :param bool header: indicator if header shall be stored
-        :param str file_out : path to output file
+            file_out (str, optional): Path to output file.
+                Defaults to None.
+            header (bool, optional): Indicator if header shall be stored.
+                Defaults to True.
 
-        :return file_out : path to output csv file
+        Returns:
+            file_out: Path to output csv file.
         """
-        self.file_out = df.to_csv(file_out, header=header)
+        self.file_out = self.df.to_csv(file_out, header=header)
 
 
 class analysis:
-    def __init__(self, df: str, table_name: str):
-        self.table = None
+    def __init__(self, df: str, table: str):
+        self.table = table
         self.df = df
         self.df_filtered = None
-        self.table_name = table_name
         self.eudlid_dist = []
 
     def filter_columns_by_variance(self, treshold):
@@ -143,25 +167,24 @@ class analysis:
         return  # sorted r2 values as pandas sequence
 
     # calculate euclidean distance
-    def calc_euclidean_dist(self, col_a, col_b):
-        """
+    def calc_euclidean_dist(self, col_a: int = None, col_b: int = None):
+        """Method to calculate euclidean distance between two vectors
 
-        Method to calculate euclidean distance between two vectors
+        Args:
+            col_a (int, optional): Index of column a.
+                Defaults to None.
+            col_b (int, optional): Index of column b.
+                Defaults to None.
 
-        :param col_a: index of column a
-        :param col_b: index of column b
-
-        :return self.euclid_dist : eudlidean distance between two columns
+        Returns:
+            self.euclid_dist: eudlidean distance between two columns
         """
 
         # using loadtxt, bc nan_to_num did not work with np.genfromtxt()
-        tab = np.nan_to_num(self.table)
-
-        # calculate euclidean distance
-        euclid_dist = np.sqrt((col_a - col_b) ** 2)
+        table = np.nan_to_num(self.table)
 
         # calculate euclidean distance between vectors of different columns
-        self.eudlid_dist = euclid_dist(tab[:, col_a], tab[:, col_b])
+        self.eudlid_dist = np.sqrt((table[:, col_a] - table[:, col_b]) ** 2)
 
     def fourier_trafo(self):
         pass
