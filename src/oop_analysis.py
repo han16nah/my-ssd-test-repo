@@ -1,5 +1,5 @@
 import pandas as pd
-# import numpy as np
+import numpy as np
 # import matplotlib.pyplot as plt
 # import seaborn as sns
 import time
@@ -53,6 +53,7 @@ class analysis:
     def __init__(self, df: pd.DataFrame):
         self.df = df
         self.df_clean = None
+        self.np = np.array  # on occasion: find pd way for fft
 
     def filter_columns_by_variance(self, threshold: float):
         """
@@ -70,7 +71,13 @@ class analysis:
         return
 
     def fourier_trafo(self):
-        pass
+        """
+        Perform Fourier transform
+        :return: Fourier frequency,
+        """
+        fft = np.fft.fft(self.np[1:, 1].astype("float64"))
+        fftfreq = np.fft.fftfreq(fft.size, 0.1)
+        return fft, fftfreq
 
 
 ##############################################################
