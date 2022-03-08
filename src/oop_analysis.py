@@ -1,4 +1,4 @@
-# import pandas as pd
+import pandas as pd
 # import numpy as np
 # import matplotlib.pyplot as plt
 # import seaborn as sns
@@ -50,12 +50,18 @@ class in_out:
 
 
 class analysis:
-    def __init__(self, df: str):
+    def __init__(self, df: pd.DataFrame):
         self.df = df
-        self.df_filtered = None
+        self.df_clean = None
 
-    def filter_columns_by_variance(self, treshold):
-        return self.df_filtered
+    def filter_columns_by_variance(self, threshold: float):
+        """
+        Filter dataframe by variance threshold.
+        :param threshold: Filter value to surpass for columns to be considered further.
+        :return: Dataframe cleaned of columns with a small variance.
+        """
+        df_clean = self.df.loc[:, (self.df.var() >= threshold)]
+        return df_clean
 
     def create_corr_matrix(self):
         return  # sorted r2 values as pandas sequence
