@@ -1,6 +1,7 @@
 import pandas as pd
 
 # import getopt
+
 import numpy as np
 
 # import matplotlib.pyplot as plt
@@ -154,17 +155,42 @@ class in_out:
 
 
 class analysis:
-    def __init__(self, df: str, table: str):
-        self.table = table
+    def __init__(self, df: pd.DataFrame):
         self.df = df
         self.df_filtered = None
         self.eudlid_dist = []
 
-    def filter_columns_by_variance(self, treshold):
+    def filter_columns_by_variance(self, treshold: float):
         return self.df_filtered
 
-    def create_corr_matrix(self):
-        return  # sorted r2 values as pandas sequence
+    def create_corr_matrix(self, rm_col: str = None) -> pd.Series:
+        """Function to compute the correlation coefficients (Pearson'r R)
+        between values in a data frame.
+        Optionally, a single column can be removed.
+        The output contains no redundant correlation values
+        and is sorted ascending.
+
+        Args:
+            rm_col (str, optional): Name of column in the data frame to remove.
+                Defaults to None.
+
+        Returns:
+            pd.Series: Sorted Series of Pearson's Correlation Coefficient
+
+        """
+
+        # correlation matrix
+        r = self.df_filtered.corr()
+
+        # get only upper triangle without diagonal
+        r_ut = r.where((np.triu(np.ones(r.shape)).astype(bool)) & (r != 1.0))
+        if rm_col is not None:
+            r_ut.pop(rm_col)
+
+        # sort ascending
+        sorted_r = r_ut.unstack().dropna().sort_values()
+
+        return sorted_r
 
     # calculate euclidean distance
     def calc_euclidean_dist(self, col_a: int = None, col_b: int = None):

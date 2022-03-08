@@ -1,0 +1,9 @@
+numpy
+pandas
+seaborn
+jupyter
+sphinx
+flake8
+flake8-nb
+black[jupyter]
+black_nbconvert

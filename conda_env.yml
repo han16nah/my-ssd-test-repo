@@ -1,0 +1,17 @@
+name: ssd
+channels:
+  - https://conda.anaconda.org/domdfcoding
+  - https://conda.anaconda.org/conda-forge
+  - defaults
+dependencies:
+  - numpy
+  - pandas
+  - seaborn
+  - python=3.8
+  - jupyter
+  - sphinx
+  - pip:
+    - flake8
+    - flake8-nb
+    - black[jupyter]
+    - black_nbconvert
