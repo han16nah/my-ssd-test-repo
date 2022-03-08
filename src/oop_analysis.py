@@ -163,7 +163,7 @@ class analysis:
     def filter_columns_by_variance(self, treshold: float):
         return self.df_filtered
 
-    def create_corr_matrix(self, rm_col: str = None) -> pd.Series:
+    def get_corr(self, rm_col: str = None) -> pd.Series:
         """Function to compute the correlation coefficients (Pearson'r R)
         between values in a data frame.
         Optionally, a single column can be removed.
@@ -180,15 +180,17 @@ class analysis:
         """
 
         # correlation matrix
-        r = self.df_filtered.corr()
+        corr_mat = self.df_filtered.corr()
 
         # get only upper triangle without diagonal
-        r_ut = r.where((np.triu(np.ones(r.shape)).astype(bool)) & (r != 1.0))
+        corr_mat_ut = corr_mat.where((np.triu(np.ones(corr_mat.shape), 1).astype(bool)))
+
+        # remove column (if one is specified)
         if rm_col is not None:
-            r_ut.pop(rm_col)
+            corr_mat_ut.pop(rm_col)
 
         # sort ascending
-        sorted_r = r_ut.unstack().dropna().sort_values()
+        sorted_r = corr_mat_ut.unstack().dropna().sort_values()
 
         return sorted_r
 
