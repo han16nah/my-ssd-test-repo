@@ -1,14 +1,11 @@
 import pandas as pd
-
-
-# import getopt
 import numpy as np
-# import matplotlib.pyplot as plt
-# import seaborn as sns
 import time
 import sys
 
-
+# import getopt
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 # sns.set_theme(style="darkgrid")
 
 
@@ -20,6 +17,8 @@ import sys
 ##############################################################
 #                    main function                           #
 ##############################################################
+
+
 def main(argv):
     """
     Args:
@@ -93,6 +92,7 @@ class in_out:
                 Defaults to None.
             table (str, optional): path to table file.
                 Defaults to None.
+
         """
 
     # read csv file into dataframe
@@ -149,6 +149,7 @@ class in_out:
 
         Returns:
             file_out: Path to output csv file.
+
         """
         self.file_out = self.df.to_csv(file_out, header=header)
 
@@ -157,8 +158,8 @@ class analysis:
     def __init__(self, df: pd.DataFrame):
         self.df = df
         self.df_clean = None
-        self.eudlid_dist = [] 
-      
+        self.eudlid_dist = []
+
     def filter_columns_by_variance(self, threshold: float):
         """
         Filter dataframe by variance threshold.
@@ -166,8 +167,9 @@ class analysis:
             threshold: Filter value to surpass for columns to be considered further.
         Returns:
             Dataframe cleaned of columns with a small variance.
+
         """
-        df_clean = self.df.loc[:, (self.df.var() >= threshold)]     
+        self.df_clean = self.df.loc[:, (self.df.var() >= threshold)]
         return self.df_clean
 
     def get_corr(self, rm_col: str = None) -> pd.Series:
@@ -213,6 +215,7 @@ class analysis:
 
         Returns:
             self.euclid_dist: eudlidean distance between two columns
+
         """
 
         # using loadtxt, bc nan_to_num did not work with np.genfromtxt()
@@ -227,6 +230,7 @@ class analysis:
 
         Returns:
             Fourier transform and frequency
+
         """
         fft = np.fft.fft(self.np[1:, 1].astype("float64"))
         fftfreq = np.fft.fftfreq(fft.size, 0.1)
