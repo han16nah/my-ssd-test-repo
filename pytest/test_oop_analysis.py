@@ -1,27 +1,32 @@
+import pytest
 import unittest
 from oop_analysis import in_out
 import pandas as pd
 import numpy as np
 from oop_analysis import analysis
 
-class test_in_out(unittest.TestCase):
-    def test_read_csv_as_df(self):
 
-        # given
-        file_in = r"J:\01_Projekte\SSC_Workshop\my-ssd-test-repo\data\expec.t"
+@pytest.mark.in_out
+@pytest.mark.parametetrize("first_row_first_val", "len_df", [(0.0, 101), (0.0, 101)])
+# @pytest.mark.skip(reason="Already using unittest")
+def test_read_csv_as_df(len_df, first_row_first_val):
+    """Test reading a csv file into a dataframe"""
 
-        # expected
-        input_table = in_out()
-        input_table.df = file_in
-        df = input_table.read_csv_as_df(input_table.df, "    ")
-        len_df = 101
-        first_row_first_val = "0.2"
+    # given
+    file_in = r"J:\01_Projekte\SSC_Workshop\my-ssd-test-repo\data\expec.t"
 
-        # check if length of dataframe is as expected
-        self.assertTrue(len(df.index) == len_df)
+    # expected
+    input_obj = in_out()
+    df = input_obj.read_csv_as_df(file_in)
 
-        # check if first value in first column is as expected
-        self.assertTrue(df.iloc[0][0:2] == first_row_first_val)
+    # check if length of dataframe is as expected
+    assert (len(df.index) == len_df) is True
+
+    # check if first value in first column is as expected
+    row_1 = df.iloc[0]
+    print(row_1)
+
+    assert (row_1[0] == first_row_first_val) is True
 
 
 class test_create_corr_matrix(unittest.TestCase):
@@ -46,3 +51,7 @@ class test_create_corr_matrix(unittest.TestCase):
 
     # TODO: Test the rm_col option of get_corr()
 
+
+if __name__ == "__main__":
+    unittest.main()
+    pytest.main()
