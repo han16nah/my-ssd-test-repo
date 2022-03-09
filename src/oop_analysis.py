@@ -1,9 +1,8 @@
 import pandas as pd
 
+
 # import getopt
-
 import numpy as np
-
 # import matplotlib.pyplot as plt
 # import seaborn as sns
 import time
@@ -157,11 +156,19 @@ class in_out:
 class analysis:
     def __init__(self, df: pd.DataFrame):
         self.df = df
-        self.df_filtered = None
-        self.eudlid_dist = []
-
-    def filter_columns_by_variance(self, treshold: float):
-        return self.df_filtered
+        self.df_clean = None
+        self.eudlid_dist = [] 
+      
+    def filter_columns_by_variance(self, threshold: float):
+        """
+        Filter dataframe by variance threshold.
+        Args:
+            threshold: Filter value to surpass for columns to be considered further.
+        Returns:
+            Dataframe cleaned of columns with a small variance.
+        """
+        df_clean = self.df.loc[:, (self.df.var() >= threshold)]     
+        return self.df_clean
 
     def get_corr(self, rm_col: str = None) -> pd.Series:
         """Function to compute the correlation coefficients (Pearson'r R)
@@ -215,7 +222,15 @@ class analysis:
         self.eudlid_dist = np.sqrt((table[:, col_a] - table[:, col_b]) ** 2)
 
     def fourier_trafo(self):
-        pass
+        """
+        Perform Fourier transform.
+
+        Returns:
+            Fourier transform and frequency
+        """
+        fft = np.fft.fft(self.np[1:, 1].astype("float64"))
+        fftfreq = np.fft.fftfreq(fft.size, 0.1)
+        return fft, fftfreq
 
 
 ##############################################################
