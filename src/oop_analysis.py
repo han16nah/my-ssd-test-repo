@@ -1,8 +1,8 @@
 import pandas as pd
 
-
 # import getopt
 import numpy as np
+
 # import matplotlib.pyplot as plt
 # import seaborn as sns
 import time
@@ -157,8 +157,8 @@ class analysis:
     def __init__(self, df: pd.DataFrame):
         self.df = df
         self.df_clean = None
-        self.eudlid_dist = [] 
-      
+        self.eudlid_dist = []
+
     def filter_columns_by_variance(self, threshold: float):
         """
         Filter dataframe by variance threshold.
@@ -167,7 +167,7 @@ class analysis:
         Returns:
             Dataframe cleaned of columns with a small variance.
         """
-        df_clean = self.df.loc[:, (self.df.var() >= threshold)]     
+        df_clean = self.df.loc[:, (self.df.var() >= threshold)]
         return self.df_clean
 
     def get_corr(self, rm_col: str = None) -> pd.Series:
@@ -228,9 +228,38 @@ class analysis:
         Returns:
             Fourier transform and frequency
         """
+
         fft = np.fft.fft(self.np[1:, 1].astype("float64"))
         fftfreq = np.fft.fftfreq(fft.size, 0.1)
         return fft, fftfreq
+
+    def get_acf(self):
+        """
+        Method to create autocorrelation function (ACF).
+        Correlates a signal with itself at different times.
+
+        Returns:
+            Autocorrelation array, that may then be plotted as abs(acf ** 2)
+        """
+
+        # remove time column (col0)
+        # col0 = self.df[:, 0]
+        # time_vector = col0[:, np.newaxis]
+        time_vector = self.df[0]
+        wout_t = self.df[:, 1:]
+
+        # combine real and imaginary parts to complex
+        real = wout_t[0::2]  # from 0 in steps of 2
+        imag = wout_t[1::2]  # from 1 in steps of 2
+
+        df_compl = real + 1j * imag
+
+        # autocorrelation
+        acf = np.zeros(len(df_compl), dtype=complex)
+        for i in range(0, len(df_compl)):
+            acf[i] = np.sum(df_compl[0, :] * np.conjugate(df_compl[i, :]))
+
+        return acf
 
 
 ##############################################################
