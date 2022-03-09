@@ -58,8 +58,10 @@ class analysis:
     def filter_columns_by_variance(self, threshold: float):
         """
         Filter dataframe by variance threshold.
-        :param threshold: Filter value to surpass for columns to be considered further.
-        :return: Dataframe cleaned of columns with a small variance.
+        Args:
+            threshold: Filter value to surpass for columns to be considered further.
+        Returns:
+            Dataframe cleaned of columns with a small variance.
         """
         df_clean = self.df.loc[:, (self.df.var() >= threshold)]
         return df_clean
@@ -72,8 +74,10 @@ class analysis:
 
     def fourier_trafo(self):
         """
-        Perform Fourier transform
-        :return: Fourier frequency,
+        Perform Fourier transform.
+
+        Returns:
+            Fourier transform and frequency
         """
         fft = np.fft.fft(self.np[1:, 1].astype("float64"))
         fftfreq = np.fft.fftfreq(fft.size, 0.1)
