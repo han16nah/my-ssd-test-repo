@@ -7,3 +7,6 @@ flake8
 flake8-nb
 black[jupyter]
 black_nbconvert
+pytest
+pytest-cov
+pytest-sugar
