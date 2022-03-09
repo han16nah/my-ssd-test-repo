@@ -1,9 +1,7 @@
 import pytest
-import unittest
-from oop_analysis import in_out
 import pandas as pd
 import numpy as np
-from oop_analysis import analysis
+from oop_analysis import in_out, analysis
 
 
 @pytest.mark.in_out
@@ -29,29 +27,28 @@ def test_read_csv_as_df(len_df, first_row_first_val):
     assert (row_1[0] == first_row_first_val) is True
 
 
-class test_create_corr_matrix(unittest.TestCase):
-    def test_create_corr_matrix(self):
-        # given
-        d = {"col1": [1, 2, 3], "col2": [3, 2, 1], "col3": [1, 2, 3]}
-        df = pd.DataFrame(data=d)
+def test_create_corr_matrix():
+    # given
+    d = {"col1": [1, 2, 3], "col2": [3, 2, 1], "col3": [1, 2, 3]}
+    df = pd.DataFrame(data=d)
 
-        # expected
-        r_exp = np.array(
-            [
-                -1.0,  # between 'col1' and 'col2'
-                -1.0,  # between 'col2' and 'col3'
-                1.0,  # between 'col1' and 'col3'
-            ]
-        )
+    # expected
+    r_exp = np.array(
+        [
+            -1.0,  # between 'col1' and 'col2'
+            -1.0,  # between 'col2' and 'col3'
+            1.0,  # between 'col1' and 'col3'
+        ]
+    )
 
-        obj = analysis(df)
-        obj.df_filtered = df
-        ser_r = obj.get_corr()
-        self.assertTrue(np.array_equal(ser_r, r_exp))
+    obj = analysis(df)
+    obj.df_filtered = df
+    ser_r = obj.get_corr()
+    np.testing.assert_array_equal(ser_r, r_exp)
 
-    # TODO: Test the rm_col option of get_corr()
+
+# TODO: Test the rm_col option of get_corr()
 
 
 if __name__ == "__main__":
-    unittest.main()
     pytest.main()
