@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 import time
 import sys
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # import getopt
-# import matplotlib.pyplot as plt
-# import seaborn as sns
 # sns.set_theme(style="darkgrid")
 
 
@@ -156,6 +156,46 @@ class in_out:
 
         """
         self.file_out = self.df.to_csv(file_out, header=header)
+
+
+class visualization:
+    def __init__(self, df: pd.DataFrame):
+        self.df = df
+
+    def plotparams(self, myplot, x_label: str, y_label: str, font_size: float = 18):
+        """Method to define plotting parameters (axes labels, fontsize)
+
+        Args:
+            myplot (_type_): figure object (typically 'ax')
+            x_label (str): x axis label
+            y_label (str): y axis label
+            font_size (float, optional): Font size for axis labels. Defaults to 18.
+                axes tick labels will be 2 pt smaller, legend font size will be 4 pt smaller
+        """
+        myplot.xaxis.set_tick_params(labelsize=font_size - 2)
+        myplot.yaxis.set_tick_params(labelsize=font_size - 2)
+        myplot.set_xlabel(x_label, fontsize=font_size)
+        myplot.set_ylabel(y_label, fontsize=font_size)
+        myplot.legend(fontsize=font_size - 4)
+
+    def multiple_lineplot_sns(
+        self, outfile: str, x_col_name: str = "time", unit_x: str = "s"
+    ):
+        """Method to create a line plot with multiple lines.
+        Column values are plotted against the 'time' columns
+
+        Args:
+            outfile (str): relative of absolute path of the output file
+            x_col_name (str, optional): Name of the column which the other columns should be plotted against.
+                Will be shown on the x-axis of the resulting plot.
+                Defaults to "time".
+            unit_x (str, optional): Unit of the x-axis column. Defaults to "s".
+        """
+        df_melted = self.df.melt(x_col_name, var_name="columns", value_name="values")
+        fig, ax = plt.subplots()
+        sns.lineplot(x=x_col_name, y="values", hue="columns", data=df_melted, ax=ax)
+        self.plotparams(ax, x_label=f"{x_col_name} [{unit_x}]", y_label="values")
+        plt.savefig(outfile, dpi=300, bbox_inches="tight")
 
 
 class analysis:
