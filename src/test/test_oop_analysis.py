@@ -12,9 +12,7 @@ def test_read_csv_as_df():
     """Test reading a csv file into a dataframe"""
 
     # given
-    file_in = (
-        "J:\\01_Projekte\\SSC_Workshop\\my-ssd-test-repo\\data\\test_data\\expec_test.t"
-    )
+    file_in = "..\\data\\test_data\\expec_test.t"
     len_df = 3
     first_row_first_val = 0.0
     # expected
