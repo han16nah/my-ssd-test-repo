@@ -37,4 +37,3 @@ jobs:
       run: |
         flake8
         flake8_nb
-        black code
