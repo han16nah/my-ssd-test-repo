@@ -99,7 +99,7 @@ class in_out:
     def read_csv_as_df(
         self,
         file_in: str = None,
-        col_separator: str = ",",
+        delim_whitespace: bool = True,
         skip_initial_space: bool = True,
     ):
         """Method to read csv file into dataframe
@@ -107,8 +107,9 @@ class in_out:
         Args:
             file_in (str, optional): Path to input file.
                 Defaults to None.
-            col_separator (str, optional): Column separator of input file.
-                Defaults to ",".
+            delim_whitespace (bool, optional): Indicates if whitespace
+            should be used to separate rows.
+                Defaults to True.
             skip_initial_space (bool, optional): Indicator if initial space
             should be skipped.
                 Defaults to True.
@@ -119,8 +120,11 @@ class in_out:
         """
 
         self.df = pd.read_csv(
-            file_in, sep=col_separator, skipinitialspace=skip_initial_space
+            file_in,
+            delim_whitespace=delim_whitespace,
+            skipinitialspace=skip_initial_space,
         )
+        return self.df
 
     # read csv file as numpy array
     def read_csv_as_np_array(self, file_in: str = None):
