@@ -5,14 +5,14 @@ from oop_analysis import in_out, analysis
 
 
 @pytest.mark.in_out
-# @pytest.mark.parametetrize("first_row_first_val", "len_df", [(0.0, 2),
-# (0.0, 2)])
+# @pytest.mark.parametetrize("first_row_first_val", "len_df", [(0.0, 3),
+# (0.0, 3)])
 # @pytest.mark.skip(reason="Already using unittest")
 def test_read_csv_as_df():
     """Test reading a csv file into a dataframe"""
 
     # given
-    file_in = "..\\data\\test_data\\expec_test.t"
+    file_in = "../data/test_data/expec_test.t"
     len_df = 3
     first_row_first_val = 0.0
     # expected
