@@ -5,6 +5,7 @@ jupyter
 sphinx
 myst-parser
 sphinxcontrib-napoleon
+pre-commit
 flake8
 flake8-nb
 black[jupyter]
